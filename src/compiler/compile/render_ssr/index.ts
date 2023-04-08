@@ -197,14 +197,14 @@ export default function ssr(
 		...reactive_store_subscriptions,
 		instance_javascript,
 		...parent_bindings,
-		css.code && b`$$result.css.add(#css);`,
+		css.code && options.css === 'injected' && b`$$result.css.add(#css);`,
 		main
 	].filter(Boolean);
 
 	const css_sourcemap_enabled = check_enable_sourcemap(options.enableSourcemap, 'css');
 
 	const js = b`
-		${css.code ? b`
+		${css.code && options.css === 'injected' ? b`
 		const #css = {
 			code: "${css.code}",
 			map: ${css_sourcemap_enabled && css.map ? string_literal(css.map.toString()) : 'null'}
